@@ -38,6 +38,10 @@ app.get('/biodata', (req, res) => {
 
 app.post('/biodata', (req, res) => {
   const { nama, alamat, agama } = req.body;
+  if (!nama || !alamat || !agama) {
+        return res.status(400).json({ message: 'Nama, alamat, dan agama harus diisi' });
+    }
+    
   const sql = "INSERT INTO biodata (nama, alamat, agama) VALUES (?, ?, ?)";
   db.query(sql, [nama, alamat, agama], (err, result) => {
     if (err) {
