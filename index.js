@@ -36,6 +36,22 @@ app.get('/biodata', (req, res) => {
   });
 });
 
+app.post('/biodata', (req, res) => {
+  const { nama, alamat, agama } = req.body;
+  const sql = "INSERT INTO biodata (nama, alamat, agama) VALUES (?, ?, ?)";
+  db.query(sql, [nama, alamat, agama], (err, result) => {
+    if (err) {
+      console.error('Error inserting data:', err);
+      return res.status(500).json({ message: 'Gagal menyimpan data ke database' });
+    }
+    res.status(201).json({ 
+      message: 'Data biodata berhasil ditambahkan',
+      data: { id: result.insertId, nama, alamat, agama }
+    });
+  });
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
